@@ -9,4 +9,7 @@ require("./config/session.config")(app);
 const authRoutes = require("./routes/auth.routes");
 app.use("/auth", authRoutes);
 
+const dogRoutes = require("./routes/dog.routes");
+app.use("/api/dogs", dogRoutes);
+
 app.listen(process.env.PORT, () => console.log("server running"));

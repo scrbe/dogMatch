@@ -14,9 +14,9 @@ exports.signup = async (req, res) => {
       return res.status(400).json({ message: "missing credentials" });
     }
 
-    if (!hasCorrectPasswordFormat(password)) {
-      return res.status(400).json({ message: "incorrect password format" });
-    }
+    // if (!hasCorrectPasswordFormat(password)) {
+    //   return res.status(400).json({ message: "incorrect password format" });
+    // }
 
     const user = await User.findOne({ email });
 
@@ -48,15 +48,17 @@ exports.login = async (req, res) => {
     const { password, email } = req.body;
     const hasMissingCredentials = !password || !email;
     if (hasMissingCredentials) {
+      console.log("misssing", req.body);
       return res.status(400).json({ message: "missing credentials" });
     }
 
-    if (!hasCorrectPasswordFormat(password)) {
-      return res.status(400).json({ message: "incorrect password format" });
-    }
+    // if (!hasCorrectPasswordFormat(password)) {
+    //   return res.status(400).json({ message: "incorrect password format" });
+    // }
 
     const user = await User.findOne({ email });
     if (!user) {
+      console.log("no user");
       return res.status(400).json({ message: "user does not exist" });
     }
     const hasCorrectPassword = await bcrypt.compare(
@@ -64,6 +66,7 @@ exports.login = async (req, res) => {
       user.hashedPassword
     );
     if (!hasCorrectPassword) {
+      console.log("incorrect password");
       return res.status(401).json({ message: "unauthorize" });
     }
 
