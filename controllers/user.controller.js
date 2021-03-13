@@ -13,6 +13,7 @@ exports.getUser = async (req, res) => {
     .populate("favoriteDogs")
     .populate("requests")
     .lean();
+  console.log("USERINFO-->", userInfo);
   res.status(200).json(userInfo);
 };
 
@@ -24,7 +25,6 @@ exports.updateUser = async (req, res) => {
 
 exports.addToFavorites = async (req, res) => {
   const { userId } = req.session;
-  console.log("USERID -->", userId);
   const { dogId } = req.params;
   const user = await User.findById(userId);
   let isFavorite = user.favoriteDogs.includes(dogId);

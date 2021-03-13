@@ -46,21 +46,18 @@ exports.deleteDog = async (req, res) => {
 
 exports.sendRequest = async (req, res) => {
   const { userId } = req.session;
-  const sendRequest = await Message.create(req.body);
-  const userSendRequest = await User.findByIdAndUpdate(
-    userId,
-    { $push: { requests: sendRequest._id } },
-    { new: true }
-  );
-
-  //PREGUNTAR
   const { dogId } = req.params;
-  const dog = await Dog.findById(dogId);
-  const dogOwnerId = dog.user;
-  const userReceiveRequest = await User.findByIdAndUpdate(
-    dogOwnerId,
-    { $push: { requests: newRequest._id } },
-    { new: true }
-  );
-  res.status(200).json(sendRequest);
+  const newMessage = await Message.create({ author: userId, ...req.body });
+  const { owner: ownerId } = await Dog.findById(dogId);
+  const updatedUserWithMessage = await User.findByIdAndUpdate(ownerId, {
+    $push: { requests: newMessage._id },
+  });
+  res.status(200).json(updatedUserWithMessage);
+};
+
+const getMessagesSent = async (req, res) => {
+  const messages = await Message.find({
+    author: { $eq: req.session.userId },
+  });
+  res.satatus(200).json(messages);
 };

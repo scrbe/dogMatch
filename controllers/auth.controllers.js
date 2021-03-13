@@ -71,6 +71,7 @@ exports.login = async (req, res) => {
     }
 
     req.session.userId = user._id;
+    console.log("REQ.SESSION LOGIN-->", req.session.userId);
 
     return res.status(200).json({ user: user.email, id: user._id });
   } catch (e) {
