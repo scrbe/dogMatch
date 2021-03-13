@@ -1,5 +1,6 @@
 const Dog = require("../model/dog.model");
 const User = require("../model/user.model");
+const Message = require("../model/message.model");
 
 exports.getAllDogs = async (req, res) => {
   const dogs = await Dog.find();
@@ -41,4 +42,25 @@ exports.deleteDog = async (req, res) => {
   const { dogId } = req.params;
   await Dog.findOneAndDelete(dogId);
   res.status(200).json({ message: "Dog deleted :(", dogId });
+};
+
+exports.sendRequest = async (req, res) => {
+  const { userId } = req.session;
+  const sendRequest = await Message.create(req.body);
+  const userSendRequest = await User.findByIdAndUpdate(
+    userId,
+    { $push: { requests: newRequest._id } },
+    { new: true }
+  );
+
+  //PREGUNTAR
+  const { dogId } = req.params;
+  const dog = await Dog.findById(dogId);
+  const dogOwnerId = dog.user;
+  const userReceiveRequest = await User.findByIdAndUpdate(
+    dogOwnerId,
+    { $push: { requests: newRequest._id } },
+    { new: true }
+  );
+  res.status(200).json(sendRequest);
 };
