@@ -9,6 +9,6 @@ const {
 route
   .get("/:userId", getUser)
   .put("/:userId", updateUser)
-  .put("/:dogId", addToFavorites);
+  .patch("/:dogId", addToFavorites);
 
 module.exports = route;

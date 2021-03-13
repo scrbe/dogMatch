@@ -23,10 +23,10 @@ exports.updateUser = async (req, res) => {
 };
 
 exports.addToFavorites = async (req, res) => {
-  console.log("hola");
   const { userId } = req.session;
+  console.log("USERID -->", userId);
   const { dogId } = req.params;
-  const user = User.findById(userId);
+  const user = await User.findById(userId);
   let isFavorite = user.favoriteDogs.includes(dogId);
   console.log(isFavorite);
   let addFavoriteDog;

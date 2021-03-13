@@ -49,7 +49,7 @@ exports.sendRequest = async (req, res) => {
   const sendRequest = await Message.create(req.body);
   const userSendRequest = await User.findByIdAndUpdate(
     userId,
-    { $push: { requests: newRequest._id } },
+    { $push: { requests: sendRequest._id } },
     { new: true }
   );
 

@@ -9,7 +9,7 @@ const DogSchema = new mongoose.Schema(
     description: String,
     popularity: Number,
     dogImage: String,
-    user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+    owner: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
     messages: [{ type: mongoose.Schema.Types.ObjectId, ref: "Message" }],
   },
   { timestamps: true }
