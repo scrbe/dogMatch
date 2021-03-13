@@ -13,6 +13,10 @@ const UserSchema = new mongoose.Schema({
     type: String,
     require: true,
   },
+  userImage: String,
+  ownedDogs: [{ type: mongoose.Schema.Types.ObjectId, ref: "Dog" }],
+  favoriteDogs: [{ type: mongoose.Schema.Types.ObjectId, ref: "Dog" }],
+  requests: [{ type: mongoose.Schema.Types.ObjectId, ref: "Message" }],
 });
 
 module.exports = mongoose.model("User", UserSchema);

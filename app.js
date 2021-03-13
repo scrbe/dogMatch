@@ -12,4 +12,7 @@ app.use("/auth", authRoutes);
 const dogRoutes = require("./routes/dog.routes");
 app.use("/api/dogs", dogRoutes);
 
+const userRoutes = require("./routes/user.routes");
+app.use("/api/user", userRoutes);
+
 app.listen(process.env.PORT, () => console.log("server running"));
