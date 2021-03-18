@@ -250,6 +250,7 @@ const dbOptions = {
   useCreateIndex: true,
   useNewUrlParser: true,
   useUnifiedTopology: true,
+  useFindAndModify: false,
 };
 
 async function seedDb() {

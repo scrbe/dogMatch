@@ -21,13 +21,28 @@ exports.createDog = async (req, res) => {
   if (hasMissingCredentials) {
     return res.status(400).json({ message: "missing credentials" });
   }
-  const newDog = await Dog.create(req.body);
+  const newDog = await Dog.create({
+    name,
+    age,
+    breed,
+    gender,
+    description,
+  });
   const userCreateNewDog = await User.findByIdAndUpdate(
     userId,
     { $push: { ownedDogs: newDog._id } },
     { new: true }
   );
   res.status(200).json(newDog);
+};
+
+exports.addImage = async (req, res) => {
+  console.log("req.file -->", req.file);
+  if (!req.file) {
+    next(new Error("No image uploaded"));
+    return;
+  }
+  res.json(req.file.path);
 };
 
 exports.updateDog = async (req, res) => {
