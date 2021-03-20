@@ -14,7 +14,7 @@ route
   .get("/", getAllDogs)
   .get("/:dogId", getOneDog)
   .post("/", createDog)
-  .post("/upload", fileParser.single("image"), addImage)
+  .post("/upload", fileParser.single("dogImage"), addImage)
   .put("/:dogId", updateDog)
   .delete("/:dogId", deleteDog);
 

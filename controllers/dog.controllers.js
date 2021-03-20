@@ -14,7 +14,7 @@ exports.getOneDog = async (req, res) => {
 };
 
 exports.createDog = async (req, res) => {
-  const { name, age, breed, gender, description } = req.body;
+  const { name, age, breed, gender, description, dogImage } = req.body;
   const { userId } = req.session;
   const hasMissingCredentials =
     !name || !age || !breed || !gender || !description;
@@ -27,12 +27,15 @@ exports.createDog = async (req, res) => {
     breed,
     gender,
     description,
+    owner: userId,
+    dogImage,
   });
   const userCreateNewDog = await User.findByIdAndUpdate(
     userId,
     { $push: { ownedDogs: newDog._id } },
     { new: true }
   );
+  console.log("newDog", newDog);
   res.status(200).json(newDog);
 };
 
@@ -47,6 +50,7 @@ exports.addImage = async (req, res) => {
 
 exports.updateDog = async (req, res) => {
   const { dogId } = req.params;
+  console.log("REQ.BODY-->", req.body);
   const updatedDog = await Dog.findByIdAndUpdate(dogId, req.body, {
     new: true,
   });
@@ -55,7 +59,7 @@ exports.updateDog = async (req, res) => {
 
 exports.deleteDog = async (req, res) => {
   const { dogId } = req.params;
-  await Dog.findOneAndDelete(dogId);
+  await Dog.findByIdAndRemove(dogId);
   res.status(200).json({ message: "Dog deleted :(", dogId });
 };
 
