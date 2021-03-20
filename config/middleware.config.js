@@ -3,7 +3,7 @@ const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const morgan = require("morgan");
 
-const origin = "http://localhost:3000";
+const origin = process.env.PUBLIC_DOMAIN;
 const corsConfig = { origin: [origin], credentials: true };
 
 module.exports = (app) => {
