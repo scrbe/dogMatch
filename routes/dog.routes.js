@@ -8,6 +8,7 @@ const {
   deleteDog,
   addImage,
 } = require("../controllers/dog.controllers");
+
 const fileParser = require("../config/cloudinary.config");
 
 route

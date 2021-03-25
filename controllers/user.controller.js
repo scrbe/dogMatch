@@ -31,23 +31,22 @@ exports.addToFavorites = async (req, res) => {
   console.log("DOGID-->", dogId);
   let isFavorite = user.favoriteDogs.includes(dogId);
   console.log(isFavorite);
-  let addFavoriteDog;
+  let userAddsFavoriteDog;
   if (isFavorite) {
-    addFavoriteDog = await User.findByIdAndUpdate(
+    userAddsFavoriteDog = await User.findByIdAndUpdate(
       userId,
       { $pull: { favoriteDogs: dogId } },
       { new: true }
     );
   } else {
-    addFavoriteDog = await User.findByIdAndUpdate(
+    userAddsFavoriteDog = await User.findByIdAndUpdate(
       userId,
       { $push: { favoriteDogs: dogId } },
       { new: true }
     );
   }
-  console.log("ADDF-->", addFavoriteDog);
-  console.log("Favorites-->", user.favoriteDogs);
-  res.status(200).json(addFavoriteDog);
+  console.log("userAddsFavoriteDog -->", userAddsFavoriteDog);
+  res.status(200).json({ isFavorite: !isFavorite, user: userAddsFavoriteDog });
 };
 
 // exports.deleteUser = async (req, res) => {

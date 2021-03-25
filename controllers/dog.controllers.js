@@ -9,7 +9,7 @@ exports.getAllDogs = async (req, res) => {
 
 exports.getOneDog = async (req, res) => {
   const { dogId } = req.params;
-  const dog = await Dog.findById(dogId);
+  const dog = await Dog.findById(dogId).populate("owner");
   res.status(200).json(dog);
 };
 
