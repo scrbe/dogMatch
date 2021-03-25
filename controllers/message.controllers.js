@@ -12,6 +12,12 @@ exports.sendMessage = async (req, res) => {
     message,
   });
 
+  const userReceivesMessage = await User.findByIdAndUpdate(
+    userId,
+    { $push: { requests: newMessage._id } },
+    { new: true }
+  );
+  console.log("userReceivesMessage :>> ", userReceivesMessage);
   res.status(200).json(newMessage);
 };
 
