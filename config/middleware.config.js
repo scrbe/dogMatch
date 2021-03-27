@@ -4,7 +4,7 @@ const cookieParser = require("cookie-parser");
 const morgan = require("morgan");
 
 const origin = process.env.PUBLIC_DOMAIN;
-const corsConfig = { origin: [origin], credentials: true };
+const corsConfig = { origin, credentials: true };
 
 module.exports = (app) => {
   app.use(morgan("dev"));

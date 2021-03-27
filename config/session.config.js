@@ -2,7 +2,7 @@ require("dotenv").config();
 const session = require("express-session");
 const MongoStore = require("connect-mongo").default;
 
-const { SESSION_SECRET, MONGODB_URI } = process.env;
+const { SESSION_SECRET, MONGODB_URI, NODE_ENV } = process.env;
 console.log(MONGODB_URI);
 
 const isProduction = NODE_ENV === "production";

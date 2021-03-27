@@ -1,6 +1,7 @@
 const Dog = require("../model/dog.model");
 const User = require("../model/user.model");
 const Message = require("../model/message.model");
+const mongoose = require("mongoose");
 
 exports.getAllDogs = async (req, res) => {
   const dogs = await Dog.find();
@@ -9,6 +10,10 @@ exports.getAllDogs = async (req, res) => {
 
 exports.getOneDog = async (req, res) => {
   const { dogId } = req.params;
+  if (!mongoose.Types.ObjectId.isValid(dogId)) {
+    res.status(404).json({ message: "this dog does not exist" });
+    return;
+  }
   const dog = await Dog.findById(dogId).populate("owner");
   res.status(200).json(dog);
 };
