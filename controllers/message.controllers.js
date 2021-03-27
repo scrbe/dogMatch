@@ -6,7 +6,7 @@ exports.sendMessage = async (req, res) => {
   const { message } = req.body;
   const { dogId } = req.params;
 
-  const newMessage = await Message({
+  const newMessage = await Message.create({
     author: userId,
     dog: dogId,
     message,
