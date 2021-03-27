@@ -27,7 +27,11 @@ exports.signup = async (req, res) => {
     const saltRounds = 10;
     const salt = await bcrypt.genSalt(saltRounds);
     const hashedPassword = await bcrypt.hash(password, salt);
-    const newUser = await User.create({ email, hashedPassword });
+    const newUser = await User.create({
+      email,
+      hashedPassword,
+      username: "Cool dog owner",
+    });
 
     req.session.userId = newUser._id;
 
@@ -58,7 +62,6 @@ exports.login = async (req, res) => {
 
     const user = await User.findOne({ email });
     if (!user) {
-      console.log("no user");
       return res.status(400).json({ message: "user does not exist" });
     }
     const hasCorrectPassword = await bcrypt.compare(

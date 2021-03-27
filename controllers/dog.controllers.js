@@ -19,29 +19,37 @@ exports.getOneDog = async (req, res) => {
 };
 
 exports.createDog = async (req, res) => {
-  const { name, age, breed, gender, description, dogImage } = req.body;
-  const { userId } = req.session;
-  const hasMissingCredentials =
-    !name || !age || !breed || !gender || !description;
-  if (hasMissingCredentials) {
-    return res.status(400).json({ message: "missing credentials" });
+  try {
+    const { name, age, breed, gender, description, dogImage } = req.body;
+    console.log("req.session :>> ", req.session);
+    const { userId } = req.session;
+    if (!userId) {
+      return res.status(401).json("No user");
+    }
+    const hasMissingCredentials =
+      !name || !age || !breed || !gender || !description;
+    if (hasMissingCredentials) {
+      return res.status(400).json({ message: "missing credentials" });
+    }
+    const newDog = await Dog.create({
+      name,
+      age,
+      breed,
+      gender,
+      description,
+      owner: userId,
+      dogImage,
+    });
+    const userCreateNewDog = await User.findByIdAndUpdate(
+      userId,
+      { $push: { ownedDogs: newDog._id } },
+      { new: true }
+    );
+    console.log("newDog", newDog);
+    res.status(200).json(newDog);
+  } catch (error) {
+    res.status(400).json(error);
   }
-  const newDog = await Dog.create({
-    name,
-    age,
-    breed,
-    gender,
-    description,
-    owner: userId,
-    dogImage,
-  });
-  const userCreateNewDog = await User.findByIdAndUpdate(
-    userId,
-    { $push: { ownedDogs: newDog._id } },
-    { new: true }
-  );
-  console.log("newDog", newDog);
-  res.status(200).json(newDog);
 };
 
 exports.addImage = async (req, res) => {

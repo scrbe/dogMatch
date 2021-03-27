@@ -11,8 +11,7 @@ exports.getUser = async (req, res) => {
   const userInfo = await User.findById(userId)
     .populate("ownedDogs")
     .populate("favoriteDogs")
-    .populate("requests")
-    .lean();
+    .populate("requests");
   console.log("USERINFO-->", userInfo);
   res.status(200).json(userInfo);
 };
