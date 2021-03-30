@@ -1,19 +1,22 @@
 const User = require("../model/user.model");
 
-// exports.getUser = async (req, res) => {
-//   const { userId } = req.params;
-//   const user = await User.findById(userId);
-//   res.status(200).json(user);
-// };
-
 exports.getUser = async (req, res) => {
-  const { userId } = req.params;
-  const userInfo = await User.findById(userId)
-    .populate("ownedDogs")
-    .populate("favoriteDogs")
-    .populate("requests");
-  console.log("USERINFO-->", userInfo);
-  res.status(200).json(userInfo);
+  try {
+    const { userId } = req.params;
+    console.log("userId :>> ", userId);
+    const userInfo = await User.findById(userId)
+      .populate("ownedDogs")
+      .populate("favoriteDogs")
+      .populate("inbox")
+      .populate({
+        path: "outbox",
+        populate: { path: "author" },
+      });
+    console.log("USERINFO-->", userInfo);
+    res.status(200).json(userInfo);
+  } catch (error) {
+    console.log("error :>> ", error);
+  }
 };
 
 exports.updateUser = async (req, res) => {

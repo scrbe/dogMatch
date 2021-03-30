@@ -10,11 +10,13 @@ exports.getAllDogs = async (req, res) => {
 
 exports.getOneDog = async (req, res) => {
   const { dogId } = req.params;
+  console.log("dogId :>> ", dogId);
   if (!mongoose.Types.ObjectId.isValid(dogId)) {
     res.status(404).json({ message: "this dog does not exist" });
     return;
   }
   const dog = await Dog.findById(dogId).populate("owner");
+  console.log("dog :>> ", dog);
   res.status(200).json(dog);
 };
 

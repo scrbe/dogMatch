@@ -8,8 +8,8 @@ const {
 
 exports.signup = async (req, res) => {
   try {
-    const { password, email } = req.body;
-    const hasMissingCredentials = !password || !email;
+    const { password, email, username } = req.body;
+    const hasMissingCredentials = !password || !email || !username;
     if (hasMissingCredentials) {
       return res.status(400).json({ message: "missing credentials" });
     }
@@ -30,7 +30,7 @@ exports.signup = async (req, res) => {
     const newUser = await User.create({
       email,
       hashedPassword,
-      username: "Cool dog owner",
+      username,
     });
 
     req.session.userId = newUser._id;

@@ -17,14 +17,14 @@ exports.sendMessage = async (req, res) => {
 
   const userSendsMessage = await User.findByIdAndUpdate(
     userId,
-    { $push: { requests: newMessage._id } },
+    { $push: { outbox: newMessage._id } },
     { new: true }
   );
   console.log("userSendsMessage :>> ", userSendsMessage);
 
   const userReceivesMessage = await User.findByIdAndUpdate(
     dogOwnerId,
-    { $push: { requests: newMessage._id } },
+    { $push: { inbox: newMessage._id } },
     { new: true }
   );
   console.log("userReceivesMessage :>> ", userReceivesMessage);
@@ -32,15 +32,11 @@ exports.sendMessage = async (req, res) => {
   res.status(200).json(newMessage);
 };
 
-exports.getMessages = async (req, res) => {
+exports.getOutbox = async (req, res) => {
   const { userId } = req.session;
-  const user = await User.findById(userId);
-  const messages = await Message.find({
-    dog: { $inc: user.ownedDogs },
-  })
-    .populate("author")
-    .populate("message")
-    .populate("dog");
-
-  return res.send(200).json(messages);
+  const user = await User.findById(userId).populate({
+    path: "outbox",
+    populate: { path: "author" },
+  });
+  return res.status(200).json(user);
 };
